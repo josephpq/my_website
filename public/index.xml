@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Portfolio website for Joseph Pan</title>
+    <link>/</link>
+    <description>Recent content on Portfolio website for Joseph Pan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello R Markdown</title>
+      <link>/post/2015-07-23-r-rmarkdown/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>/post/2015-07-23-r-rmarkdown/</guid>
+      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
+You can embed an R code chunk like this:
+summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+    </item>
+    
+    <item>
+      <title>Activites</title>
+      <link>/blogs/activities/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/activities/</guid>
+      <description>Modeling Led the team and ranked top 5% of all teams and won the Meritorious Winner in Mathematical Contest In Modeling Won first prize in Shanghai district and national second prize through thesis oral defense in Contemporary Undergraduate Mathematical Contest in Modeling
+Leadership Vice President of Antai College Student Union, Monitor of Class F1612008</description>
+    </item>
+    
+    <item>
+      <title>Education</title>
+      <link>/blogs/education/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/education/</guid>
+      <description>2020 – 2022	Tsinghua University, School of Economics and Management, Beijing, CN Reading for Master of Finance (Dual master degree with LBS MFA) | Outstanding Scholarship
+2020 – 2021	London Business School, London, UK Reading for Masters in Financial Analysis | Ikwok Scholarship
+2016 – 2020	Shanghai Jiao Tong University, Antai College of Economics and Management, Shanghai, CN Bachelor of Science in Finance | GPA:4.0/4.3 | Rank:3/151 | CFA Level 2 Candidate</description>
+    </item>
+    
+    <item>
+      <title>Internship</title>
+      <link>/blogs/internship/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/internship/</guid>
+      <description>2020 – 2020	Tencent Investment, Beijing, CN Intern, M&amp;amp;A Investment Team (5 months) •	Built DCF model and conducted comprehensive research of top US digital media manufacturer, including forecasting the TV streaming platform market size and analyzing the distinctive strengths •	Participated in expert calls, modeling of a USD 200mn investment in a leading TPA company •	Assisted in detailed research and interviews of Human Resource SaaS industry •	Completed MAU prediction model for head APPs, with detailed prediction model of Weibo</description>
+    </item>
+    
+    <item>
+      <title>Others</title>
+      <link>/blogs/others/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogs/others/</guid>
+      <description>Awards National Scholarship*2 (Top 1%), Excellent Graduates in Shanghai, Merit Student
+IT skills Proficient knowledge of Thomson One, CapitalIQ, Wind, Photoshop and Stata
+Certificates Chinese Securities Qualification Certificate, AIFA Valuation Modeling Certificate
+Languages Fluent in English and Native in Mandarin
+Interests Long-distance running (Champion in SJTU Long-distance Running Festival 5x5km Relay Race), badminton (College team member)</description>
+    </item>
+    
+  </channel>
+</rss>
