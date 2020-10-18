@@ -1,0 +1,257 @@
+---
+title: "Session 4: Homework 2"
+author: "Your name goes here"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    code_folding: show
+---
+
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(broom)
+library(ggfortify)
+library(kableExtra)
+library(car)
+library(huxtable)
+```
+
+```{r}
+listings <- read_csv(here::here("listings.csv.gz")) %>% clean_names()
+glimpse(listings)
+skim(listings)
+```
+
+```{r, Data Wrangling} 
+listings <- listings %>% 
+  mutate(price = parse_number(price), weekly_price  = parse_number(weekly_price), monthly_price  = parse_number(monthly_price))
+typeof(listings$price)
+```
+
+
+```{r,Handling missing values  } 
+skimr::skim(listings)
+listings <- listings %>% 
+  mutate(cleaning_fee = parse_number(cleaning_fee))
+
+
+listings <- listings %>%
+  mutate(cleaning_fee = case_when(
+    is.na(cleaning_fee) ~ 0, 
+    TRUE ~ cleaning_fee))
+skimr::skim(listings)
+
+
+```
+
+```{r}
+listings %>% count(property_type, sort=TRUE)
+
+
+listings <- listings %>%
+  mutate(prop_type_simplified = case_when(
+    property_type %in% c("Apartment","Condominium", "Serviced apartment","House") ~ property_type, 
+    TRUE ~ "Other"
+  ))
+
+listings %>%
+  count(property_type, prop_type_simplified) %>%
+  arrange(desc(n))    
+
+listings %>%
+  count(minimum_nights) %>%
+  arrange(desc(n))   
+
+listings_cleaned <- listings %>%
+  filter(minimum_nights <=4 )
+listings_cleaned
+```
+
+The most common nights are 1,3,2,90. 
+```{r}
+library(leaflet)
+
+leaflet(data = listings_cleaned) %>% 
+  addProviderTiles("OpenStreetMap.Mapnik") %>% 
+  addCircleMarkers(lng = ~longitude, 
+                   lat = ~latitude, 
+                   radius = 1, 
+                   fillColor = "blue", 
+                   fillOpacity = 0.4, 
+                   popup = ~listing_url,
+                   label = ~property_type)
+```
+
+```{r Regression Analysis}
+
+listings_cleaned <- listings_cleaned %>%
+  mutate(guests_included = case_when(
+    is.na(guests_included) ~ 0, 
+    TRUE ~ guests_included))
+
+listings_cleaned <- listings_cleaned %>%
+  mutate(extra_people = parse_number(extra_people))
+
+typeof(listings_cleaned$extra_people)
+typeof(listings_cleaned$guests_included )
+
+listings_cleaned <- listings_cleaned %>%
+  mutate(price_4_nights = 4*price + if_else(guests_included<2,extra_people,0) + cleaning_fee)
+
+#Linear regression between price_4_night and prop_type_simplified, number_of_reviews, and review_scores_rating
+model1<- lm(log(price_4_nights)~prop_type_simplified+number_of_reviews+ review_scores_rating,data=listings_cleaned)
+
+glance(model1)%>%
+  kbl()%>%
+  kable_styling()
+
+#Check the result .
+model1 %>%
+  tidy()%>%
+  kbl() %>% 
+  kable_styling()
+
+#Check residuals
+autoplot(model1) 
+
+#Check VIF
+vif(model1)
+
+#Add room_type in regression
+model2<- lm(log(price_4_nights)~prop_type_simplified+number_of_reviews+ review_scores_rating + room_type,data=listings_cleaned)
+
+#Check the result
+glance(model2)%>%
+  kbl()%>%
+  kable_styling()
+
+#Check residuals
+autoplot(model2) 
+
+#Check VIF
+vif(model2)
+
+```
+
+```{r Further Explanation}
+#clean the NAs in bathrooms, bedrooms,beds, and accommodates
+listings_cleaned <- listings_cleaned %>%   
+filter(is.na(beds) == FALSE) %>%
+  filter(is.na(bedrooms) == FALSE) %>%
+   filter(is.na(bathrooms) == FALSE) %>%
+    filter(is.na(accommodates) == FALSE) 
+
+#Add bathrooms, bedrooms, beds, and accommodates in regression
+model3<- lm(log(price_4_nights)~prop_type_simplified+number_of_reviews+ review_scores_rating + room_type +
+              bathrooms+bedrooms+beds+accommodates,data=listings_cleaned)
+
+#Check the result
+glance(model3)%>%
+  kbl()%>%
+  kable_styling()
+
+#Check residuals
+autoplot(model3) +
+  theme_bw()
+
+#Check VIF
+vif(model3)
+
+
+```
+
+```{r Further Explanation2}
+#inspecting neighborhoods and ordering them by number of listings
+listings_cleaned %>% group_by(neighbourhood_group_cleansed) %>%
+  mutate( neighbourhood_simplified=neighbourhood_group_cleansed)
+  
+#clean the NAs in host_is_superhost
+listings_cleaned <- listings_cleaned %>%   
+filter(is.na(host_is_superhost) == FALSE)
+
+#Add host_is_superhost,neighbourhood_simplified,is_location_exact,and cancellation_policy
+
+model4<- lm(log(price_4_nights)~prop_type_simplified+number_of_reviews+ review_scores_rating + room_type +
+              bathrooms+bedrooms+beds+accommodates+host_is_superhost+
+              is_location_exact+cancellation_policy + neighbourhood_group_cleansed
+            ,data=listings_cleaned)
+
+#Look at model result
+glance(model4)%>%
+  kbl()%>%
+  kable_styling()
+
+#Check residuals
+autoplot(model4)+
+  theme_bw()
+
+
+```
+```{r Summary Table}
+#plotting summary table
+huxreg(list("model1" = model1, "model2" = model2, "model3" = model3, "mode4" = model4))
+```
+```{r Prediction}
+#filtering data for AirBnB requirements
+my_choices <- listings_cleaned %>% filter(review_scores_rating >= 90 & number_of_reviews >= 10 & room_type=="Private room")
+predicted <- as.data.frame( predict(model4, newdata=my_choices,interval="confidence"))
+
+#calculating the confidence interval
+predicted%>%
+  mutate(predicted_price_4_nights=exp(fit),
+         lower = exp(lwr),
+         upper = exp(upr)) %>%
+  select(c("predicted_price_4_nights", "lower","upper")) %>%
+  sample_n(5) %>%
+  kbl() %>%
+  kable_styling()
+
+#calculating summary statistics for the predicted price
+predicted%>%
+  mutate(predicted_price_4_nights=exp(fit),
+         lower = exp(lwr),
+         upper = exp(upr)) %>% 
+  summarize(
+            min=min(predicted_price_4_nights),
+            max=max(predicted_price_4_nights),
+    predicted=mean(predicted_price_4_nights), 
+            stddev= sd(predicted_price_4_nights), N=n(),
+            lower =predicted-abs(qt(0.025,N))*stddev , 
+            upper =predicted+abs(qt(0.025,N))*stddev)%>%
+  kbl() %>%
+  kable_styling()
+```
+
+The data above is our predicted cost for staying 4 nights in Singapore. Our calculations show the predicted price of $341 with a lower and upper 95% confidence interval of $140 and $542, which is a reasonable price for 4 nights in Singapore for AirBnB accommodation.

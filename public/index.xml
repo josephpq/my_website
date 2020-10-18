@@ -6,7 +6,16 @@
     <description>Recent content on Portfolio website for Joseph Pan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Session 4: Homework 2</title>
+      <link>/projects/project1/project1/</link>
+      <pubDate>Sun, 18 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/project1/project1/</guid>
+      <description>listings &amp;lt;- read_csv(here::here(&amp;quot;listings.csv.gz&amp;quot;)) %&amp;gt;% clean_names()glimpse(listings)## Rows: 7,323## Columns: 106## $ id &amp;lt;dbl&amp;gt; 49091, 50646, 56334, 7...## $ listing_url &amp;lt;chr&amp;gt; &amp;quot;https://www.airbnb.co...## $ scrape_id &amp;lt;dbl&amp;gt; 2.02e+13, 2.02e+13, 2....## $ last_scraped &amp;lt;date&amp;gt; 2020-06-22, 2020-06-2...## $ name &amp;lt;chr&amp;gt; &amp;quot;COZICOMFORT LONG TERM...## $ summary &amp;lt;chr&amp;gt; NA, &amp;quot;Fully furnished b...## $ space &amp;lt;chr&amp;gt; &amp;quot;This is Room No.</description>
+    </item>
+    
     <item>
       <title>Hello R Markdown</title>
       <link>/post/2015-07-23-r-rmarkdown/</link>
